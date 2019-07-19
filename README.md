@@ -30,7 +30,6 @@ print(payload)
 lorawan.read(payload)
 print(lorawan.valid_mic())
 print("".join(list(map(chr, lorawan.get_payload()))))
-
 ```
 
 
