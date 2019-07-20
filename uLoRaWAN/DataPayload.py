@@ -2,8 +2,9 @@
 # frm_payload: data(0..N)
 #
 from .AES_CMAC import AES_CMAC
-from Crypto.Cipher import AES
 import math
+import ucryptolib
+MODE_ECB = 1
 
 
 class DataPayload:
@@ -43,6 +44,7 @@ class DataPayload:
         return list(map(int, computed_mic))
 
     def decrypt_payload(self, key, direction, mic):
+        print(self.payload, key, direction, mic)
         k = int(math.ceil(len(self.payload) / 16.0))
 
         a = []
@@ -57,7 +59,7 @@ class DataPayload:
             a += [0x00]
             a += [i+1]
 
-        cipher = AES.new(bytes(key), AES.MODE_ECB)
+        cipher = ucryptolib.aes(bytearray(key), MODE_ECB)
         s = cipher.encrypt(bytes(a))
 
         padded_payload = []
@@ -66,8 +68,11 @@ class DataPayload:
             padded_payload += (self.payload[idx - 16:idx] + ([0x00] * 16))[:16]
 
         payload = []
+
         for i in range(len(self.payload)):
+            print(s[i], padded_payload[i], s[i] ^ padded_payload[i])
             payload += [s[i] ^ padded_payload[i]]
+
         return list(map(int, payload))
 
     def encrypt_payload(self, key, direction, data):
@@ -85,7 +90,7 @@ class DataPayload:
             a += [0x00]
             a += [i+1]
 
-        cipher = AES.new(bytes(key), AES.MODE_ECB)
+        cipher = ucryptolib.aes(bytearray(key), MODE_ECB)
         s = cipher.encrypt(bytes(a))
 
         padded_payload = []

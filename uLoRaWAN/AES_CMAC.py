@@ -1,12 +1,13 @@
-from Crypto.Cipher import AES
 from struct import pack, unpack
+import ucryptolib
+MODE_ECB = 1
 
 
 class AES_CMAC:
     def gen_subkey(self, K):
-        AES_128 = AES.new(K, AES.MODE_ECB)
+        AES_128 = ucryptolib.aes(bytearray(K), MODE_ECB)
 
-        L = AES_128.encrypt('\x00'*16)
+        L = AES_128.encrypt(('\x00'*16).encode())
 
         LHigh = unpack('>Q',L[:8])[0]
         LLow  = unpack('>Q',L[8:])[0]
@@ -43,7 +44,8 @@ class AES_CMAC:
         const_Bsize = 16
         const_Zero  = b'\x00'*16
 
-        AES_128 = AES.new(K, AES.MODE_ECB)
+        AES_128 = ucryptolib.aes(bytearray(K), MODE_ECB)
+
         K1, K2 = self.gen_subkey(K)
         n      = int(len(M)/const_Bsize)
 
@@ -70,5 +72,4 @@ class AES_CMAC:
             X   = AES_128.encrypt(Y)
         Y = self.xor_128(M_last, X)
         T = AES_128.encrypt(Y)
-
         return T

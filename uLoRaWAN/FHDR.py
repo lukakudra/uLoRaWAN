@@ -21,7 +21,7 @@ class FHDR:
         self.devaddr = [0x00, 0x00, 0x00, 0x00]
         self.fctrl = 0x00
         if 'fcnt' in args:
-            self.fcnt = args['fcnt'].to_bytes(2, byteorder='little')
+            self.fcnt = args['fcnt'].to_bytes(2, 'little')
         else:
             self.fcnt = [0x00, 0x00]
         self.fopts = []

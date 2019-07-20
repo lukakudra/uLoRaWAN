@@ -23,6 +23,7 @@ class PhyPayload:
         self.mac_payload.read(self.get_mhdr().get_mtype(), packet[1:-4])
         self.mic = packet[-4:]
 
+
     def create(self, mhdr, args):
         self.mhdr = MHDR(mhdr)
         self.set_direction()

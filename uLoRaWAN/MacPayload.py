@@ -53,7 +53,7 @@ class MacPayload:
         mac_payload = []
         if self.fhdr.get_devaddr() != [0x00, 0x00, 0x00, 0x00]:
             mac_payload += self.fhdr.to_raw()
-        if self.frm_payload is not None:
+        if self.frm_payload != None:
             if self.fhdr.get_devaddr() != [0x00, 0x00, 0x00, 0x00]:
                 mac_payload += [self.fport]
             mac_payload += self.frm_payload.to_raw()
