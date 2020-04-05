@@ -1,11 +1,11 @@
 from struct import pack, unpack
-import ucryptolib
+import crypto
 MODE_ECB = 1
 
 
 class AES_CMAC:
     def gen_subkey(self, K):
-        AES_128 = ucryptolib.aes(bytearray(K), MODE_ECB)
+        AES_128 = crypto.AES(bytearray(K), MODE_ECB)
 
         L = AES_128.encrypt(('\x00'*16).encode())
 
@@ -44,7 +44,7 @@ class AES_CMAC:
         const_Bsize = 16
         const_Zero  = b'\x00'*16
 
-        AES_128 = ucryptolib.aes(bytearray(K), MODE_ECB)
+        AES_128 = crypto.AES(bytearray(K), MODE_ECB)
 
         K1, K2 = self.gen_subkey(K)
         n      = int(len(M)/const_Bsize)

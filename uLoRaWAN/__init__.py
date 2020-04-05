@@ -1,6 +1,6 @@
 
 """
-This is a port of library LoRaWAN to MicroPython using library ucryptolib.
+This is a port of library LoRaWAN to MicroPython using library crypto.
 
 """
 from .PhyPayload import PhyPayload

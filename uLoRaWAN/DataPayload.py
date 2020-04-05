@@ -3,7 +3,7 @@
 #
 from .AES_CMAC import AES_CMAC
 import math
-import ucryptolib
+import crypto
 MODE_ECB = 1
 
 
@@ -59,7 +59,7 @@ class DataPayload:
             a += [0x00]
             a += [i+1]
 
-        cipher = ucryptolib.aes(bytearray(key), MODE_ECB)
+        cipher = crypto.AES(bytearray(key), MODE_ECB)
         s = cipher.encrypt(bytes(a))
 
         padded_payload = []
@@ -90,7 +90,7 @@ class DataPayload:
             a += [0x00]
             a += [i+1]
 
-        cipher = ucryptolib.aes(bytearray(key), MODE_ECB)
+        cipher = crypto.AES(bytearray(key), MODE_ECB)
         s = cipher.encrypt(bytes(a))
 
         padded_payload = []

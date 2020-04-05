@@ -3,7 +3,7 @@
 #
 from .MalformedPacketException import MalformedPacketException
 from .AES_CMAC import AES_CMAC
-import ucryptolib
+import crypto
 MODE_ECB = 1
 
 class JoinAcceptPayload:
@@ -57,7 +57,7 @@ class JoinAcceptPayload:
         a += self.encrypted_payload
         a += mic
 
-        cipher = ucryptolib.aes(bytearray(key), MODE_ECB)
+        cipher = crypto.AES(bytearray(key), MODE_ECB)
         self.payload = cipher.encrypt(bytes(a))[:-4]
 
         self.appnonce = self.payload[:3]
@@ -76,7 +76,7 @@ class JoinAcceptPayload:
         a += self.to_clear_raw()
         a += self.compute_mic(key, direction, mhdr)
 
-        cipher = ucryptolib.aes(bytearray(key), MODE_ECB)
+        cipher = crypto.AES(bytearray(key), MODE_ECB)
         return list(map(int, cipher.decrypt(bytes(a))))
 
     def derive_nwskey(self, key, devnonce):
@@ -86,7 +86,7 @@ class JoinAcceptPayload:
         a += devnonce
         a += [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
 
-        cipher = ucryptolib.aes(bytearray(key), MODE_ECB)
+        cipher = crypto.AES(bytearray(key), MODE_ECB)
         return list(map(int, cipher.encrypt(bytes(a))))
 
     def derive_appskey(self, key, devnonce):
@@ -96,5 +96,5 @@ class JoinAcceptPayload:
         a += devnonce
         a += [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
 
-        cipher = ucryptolib.aes(bytearray(key), MODE_ECB)
+        cipher = crypto.AES(bytearray(key), MODE_ECB)
         return list(map(int, cipher.encrypt(bytes(a))))
